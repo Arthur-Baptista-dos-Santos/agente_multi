@@ -1,10 +1,10 @@
-# Multi-Agent Analytics Pipeline
+# `Multi-Agent Analytics Pipeline`
 
-> Sistema multi-agente com CrewAI e Ollama que analisa dados de vendas com 7 agentes especializados, gera insights estratégicos e exibe resultados em um dashboard interativo com Streamlit e Plotly.
+> Sistema multi-agente com CrewAI e Ollama que orquestra 7 agentes especializados para analisar dados de vendas, gerar insights estratégicos e exibir resultados em um dashboard interativo com Streamlit e Plotly.
 
 ---
 
-## Tecnologias
+## `Tecnologias`
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
 ![CrewAI](https://img.shields.io/badge/CrewAI-Multi--Agent-red)
@@ -15,41 +15,71 @@
 
 ---
 
-## O que faz
+## `O que faz`
 
-Orquestra 7 agentes de IA especializados que trabalham em sequência para analisar um pipeline de vendas: cada agente tem um papel distinto, usa ferramentas reais para acessar o banco de dados e passa seu resultado para o próximo. O sistema encerra com um relatório executivo consolidado e um dashboard visual interativo.
+Recebe dados de vendas processados pelo pipeline [`etl_airflow`](https://github.com/Arthur-Baptista-dos-Santos/etl_airflow) e orquestra 7 agentes de IA especializados em sequência. Cada agente tem um papel distinto, acessa o banco DuckDB com ferramentas reais e passa seu output como contexto para o próximo. O pipeline encerra com um relatório executivo consolidado e um dashboard visual interativo com KPIs e gráficos em tempo real.
 
 ---
 
-## Arquitetura
+## `Fluxo dos agentes`
 
 ```
-Pipeline de Dados (etl_airflow - DuckDB)
-    Equipe Multi-Agent (CrewAI - Process.sequential)
-        1. Explorador de Dados        - perfila o dataset
-        2. Analista Estatístico       - calcula distribuicoes e tendencias
-        3. Analista de Negócios       - interpreta KPIs por vendedor e regiao
-        4. Analista de Insights       - identifica os 3 insights estratégicos
-        5. Auditor de Qualidade       - verifica nulos, anomalias e consistencia
-        6. Engenheiro de Visualizacao - descreve o dashboard ideal
-        7. Redator Executivo          - sintetiza tudo em relatorio executivo
-    Interface Streamlit (http://localhost:8501)
-    Dashboard Interativo (http://localhost:8502)
+DuckDB (vendas.db)
+    Explorador de Dados          - perfila o dataset: registros, colunas, datas
+        Analista Estatístico     - calcula distribuicoes, medias e tendencias
+            Analista de Negócios - interpreta KPIs por vendedor e regiao
+                Analista de Insights - identifica os 3 insights estratégicos
+                    Auditor de Qualidade - verifica nulos, anomalias e consistencia
+                        Engenheiro de Visualizacao - descreve o dashboard ideal
+                            Redator Executivo - sintetiza tudo em relatorio executivo
 ```
 
 ---
 
-## Ferramentas dos agentes
+## `Arquitetura`
 
-| Ferramenta | O que faz |
-|---|---|
-| `Ler dados do banco` | Lê todas as vendas do DuckDB e retorna em CSV |
-| `Calcular KPIs de vendas` | Calcula receita, lucro e margem por vendedor e região |
-| `Verificar qualidade dos dados` | Conta nulos, registros removidos e inconsistências |
+```
+agente_multi/
+├── src/
+│   ├── ferramentas.py   # 3 ferramentas com @tool decorator (CrewAI)
+│   ├── agentes.py       # 7 agentes com role, goal e backstory
+│   ├── tarefas.py       # 7 tarefas com description e expected_output
+│   └── equipe.py        # Crew com Process.sequential + funcao executar()
+├── dashboard/
+│   └── dashboard.py     # Dashboard Streamlit com Plotly (4 KPIs + 4 graficos)
+├── relatorios/          # Relatórios gerados (gitignored)
+├── app.py               # Interface Streamlit principal
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
 
 ---
 
-## Pré-requisitos
+## `Ferramentas dos agentes`
+
+| Ferramenta | Agentes que usam | O que faz |
+|---|---|---|
+| `Ler dados do banco` | Explorador, Estatístico, Insights, Redator | Lê todas as vendas do DuckDB em CSV |
+| `Calcular KPIs de vendas` | Negócios, Insights, Visualizacao, Redator | Calcula receita, lucro e margem por vendedor e região |
+| `Verificar qualidade dos dados` | Auditor | Conta nulos, registros removidos e inconsistências |
+
+---
+
+## `Resultados`
+
+| Vendedor | Vendas | Receita | Lucro | Margem Média |
+|---|---|---|---|---|
+| João | 6 | R$ 23.650,00 | R$ 9.810,00 | 44,42% |
+| Carlos | 6 | R$ 13.870,00 | R$ 5.750,00 | 44,42% |
+| Ana | 5 | R$ 8.120,00 | R$ 3.620,00 | 46,97% |
+| Maria | 6 | R$ 6.630,00 | R$ 3.170,00 | 47,76% |
+
+Receita total: R$ 52.270,00 - Lucro total: R$ 22.350,00 - Margem média: 45,85%
+
+---
+
+## `Pré-requisitos`
 
 - Python 3.10+
 - Ollama instalado com `mistral` disponível
@@ -57,7 +87,7 @@ Pipeline de Dados (etl_airflow - DuckDB)
 
 ---
 
-## Instalação
+## `Como rodar`
 
 ```bash
 git clone https://github.com/Arthur-Baptista-dos-Santos/agente_multi.git
@@ -69,57 +99,44 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
----
-
-## Como usar
-
 ```bash
-# Garanta que o Ollama está rodando com o modelo disponível
+# Garanta que o Ollama esta rodando com o modelo disponivel
 ollama pull mistral
 
-# Suba o pipeline etl_airflow para gerar os dados
-cd ../etl_airflow
-docker compose up airflow-init
-docker compose up webserver scheduler -d
-# Acesse http://localhost:8080, ative e dispare a DAG pipeline_vendas
-docker compose down
-
-# Rode a interface principal (executa os 7 agentes)
-cd ../agente_multi
+# Interface principal - executa os 7 agentes em sequencia
 streamlit run app.py
 
-# Em outro terminal, rode o dashboard visual
+# Em outro terminal - dashboard visual interativo
 streamlit run dashboard/dashboard.py --server.port 8502
 ```
 
----
-
-## Estrutura
-
-```
-agente_multi/
-├── src/
-│   ├── ferramentas.py   # 3 ferramentas com @tool decorator (CrewAI)
-│   ├── agentes.py       # 7 agentes especializados com roles e backstories
-│   ├── tarefas.py       # 7 tarefas com descriptions e expected_outputs
-│   └── equipe.py        # Crew com Process.sequential + funcao executar()
-├── dashboard/
-│   └── dashboard.py     # Dashboard Streamlit com Plotly (KPIs + 4 graficos)
-├── relatorios/          # Relatórios gerados (gitignored)
-├── app.py               # Interface Streamlit principal
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+Acesse `http://localhost:8501`, clique em **Executar análise completa** e aguarde os 7 agentes processarem. O dashboard estara disponível em `http://localhost:8502`.
 
 ---
 
-## Conceitos aplicados
+## `Orquestração da equipe`
 
-- **Multi-Agent System**: múltiplos agentes com papéis distintos colaborando em sequência
-- **CrewAI**: framework de orquestração multi-agente com Agent, Task e Crew
-- **Process.sequential**: cada agente recebe o output do anterior como contexto
-- **@tool decorator**: transforma funções Python em ferramentas que o LLM pode chamar
-- **Ollama**: inferência local de LLMs sem custo de API, privacidade total dos dados
-- **DuckDB**: banco analítico embutido como fonte de verdade para todos os agentes
-- **Streamlit + Plotly**: dashboard interativo com KPIs e gráficos em tempo real
+```python
+equipe = Crew(
+    agents=[explorador, estatistico, analista_negocio, analista_insights,
+            auditor_qualidade, visualizador, redator],
+    tasks=[tarefa_explorar, tarefa_estatistica, tarefa_negocio, tarefa_insights,
+           tarefa_qualidade, tarefa_dashboard, tarefa_relatorio],
+    process=Process.sequential,
+)
+```
+
+`Process.sequential` garante que cada agente recebe o output dos anteriores como contexto acumulado antes de executar sua tarefa.
+
+---
+
+## `Conceitos aplicados`
+
+- **`Multi-Agent System`**: múltiplos agentes com papéis distintos colaborando em sequência para resolver um problema complexo
+- **`CrewAI`**: framework de orquestração multi-agente com Agent, Task e Crew
+- **`Process.sequential`**: cada agente recebe o output do anterior como contexto acumulado
+- **`@tool decorator`**: transforma funções Python em ferramentas que o LLM pode chamar autonomamente
+- **`Role, Goal, Backstory`**: identidade do agente que guia o raciocínio e o tom das respostas
+- **`Ollama`**: inferência local de LLMs sem custo de API e com privacidade total dos dados
+- **`DuckDB`**: banco analítico embutido como fonte de verdade para todos os agentes
+- **`Streamlit + Plotly`**: dashboard interativo com KPIs e gráficos em tempo real a partir de dados reais
