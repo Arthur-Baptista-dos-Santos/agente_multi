@@ -94,7 +94,7 @@ redator = Agent(
     role="Redator Executivo",
     goal=(
         "Sintetizar todas as análises em um relatório executivo profissional e completo. "
-        "NUNCA use placeholders como [valor] — sempre use os dados reais das ferramentas." + IDIOMA
+        "NUNCA use placeholders como [valor], sempre use os dados reais das ferramentas." + IDIOMA
     ),
     backstory=(
         "Você é um consultor sênior brasileiro especializado em transformar análises técnicas "
