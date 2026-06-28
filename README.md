@@ -146,13 +146,13 @@ equipe = Crew(
 
 ## `Demonstração`
 
-**Pipeline dos 7 agentes** — os agentes executam em sequência, cada um recebendo o output do anterior como contexto. O Redator Executivo sintetiza tudo em relatório final com análise de desempenho, avaliação regional e tendências.
+**Pipeline dos 7 agentes**: os agentes executam em sequência, cada um recebendo o output do anterior como contexto. O Redator Executivo sintetiza tudo em relatório final com análise de desempenho, avaliação regional e tendências.
 
 ![Pipeline Multi-Agent](docs/screenshots/pipeline-resultado.png)
 
 ---
 
-**Dashboard interativo** — gerado automaticamente pelo pipeline com 4 KPIs (R$ 52.270 de receita, 45.85% margem média), receita por vendedor, distribuição regional, margem ao longo do tempo e lucro por produto.
+**Dashboard interativo**: gerado automaticamente pelo pipeline com 4 KPIs (R$ 52.270 de receita, 45.85% margem média), receita por vendedor, distribuição regional, margem ao longo do tempo e lucro por produto.
 
 ![Dashboard de Vendas](docs/screenshots/dashboard.png)
 
@@ -167,7 +167,7 @@ Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais informações
 ## `Autor`
 
 **Arthur Baptista dos Santos**
-RM 565346 — Inteligência Artificial · FIAP 2025–2026
+RM 565346 · Inteligência Artificial · FIAP 2025-2026
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Arthur%20Baptista-0077B5?logo=linkedin)](https://linkedin.com/in/arthur-baptista-dos-santos)
 [![GitHub](https://img.shields.io/badge/GitHub-Arthur--Baptista--dos--Santos-181717?logo=github)](https://github.com/Arthur-Baptista-dos-Santos)
