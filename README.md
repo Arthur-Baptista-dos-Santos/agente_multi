@@ -144,6 +144,20 @@ equipe = Crew(
 
 ---
 
+## `Demonstração`
+
+**Pipeline dos 7 agentes** — os agentes executam em sequência, cada um recebendo o output do anterior como contexto. O Redator Executivo sintetiza tudo em relatório final com análise de desempenho, avaliação regional e tendências.
+
+![Pipeline Multi-Agent](docs/screenshots/pipeline-resultado.png)
+
+---
+
+**Dashboard interativo** — gerado automaticamente pelo pipeline com 4 KPIs (R$ 52.270 de receita, 45.85% margem média), receita por vendedor, distribuição regional, margem ao longo do tempo e lucro por produto.
+
+![Dashboard de Vendas](docs/screenshots/dashboard.png)
+
+---
+
 ## `Licença`
 
 Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais informações.
