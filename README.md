@@ -12,6 +12,7 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-ff4b4b)
 ![DuckDB](https://img.shields.io/badge/DuckDB-1.5-yellow)
 ![Plotly](https://img.shields.io/badge/Plotly-Charts-3F4F75)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -140,3 +141,19 @@ equipe = Crew(
 - **`Ollama`**: inferência local de LLMs sem custo de API e com privacidade total dos dados
 - **`DuckDB`**: banco analítico embutido como fonte de verdade para todos os agentes
 - **`Streamlit + Plotly`**: dashboard interativo com KPIs e gráficos em tempo real a partir de dados reais
+
+---
+
+## `Licença`
+
+Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais informações.
+
+---
+
+## `Autor`
+
+**Arthur Baptista dos Santos**
+RM 565346 — Inteligência Artificial · FIAP 2025–2026
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Arthur%20Baptista-0077B5?logo=linkedin)](https://linkedin.com/in/arthur-baptista-dos-santos)
+[![GitHub](https://img.shields.io/badge/GitHub-Arthur--Baptista--dos--Santos-181717?logo=github)](https://github.com/Arthur-Baptista-dos-Santos)
